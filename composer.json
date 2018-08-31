@@ -1,0 +1,37 @@
+{
+  "name": "stagem/zfc-notification",
+  "description": "ZF notification module",
+  "type": "zf-module",
+  "license": "MIT",
+  "keywords": [
+    "zf",
+    "zf3",
+    "notification"
+  ],
+  "authors": [
+    {
+      "name": "Vlad Kozak",
+      "email": "vlad.gem.typ@gmail.com",
+      "role": "Developer"
+    },
+    {
+      "name": "Serhii Popov",
+      "email": "popow.serhii@gmail.com",
+      "role": "Developer"
+    }
+  ],
+  "require": {
+    "php": ">=5.6 || ^7."
+  },
+  "autoload": {
+    "psr-4": {
+      "Stagem\\ZfcNotification\\": "src/"
+    }
+  },
+  "extra": {
+    "zf": {
+      "config-provider": "Stagem\\ZfcNotification\\ConfigProvider",
+      "component": "Stagem\\ZfcNotification"
+    }
+  }
+}
