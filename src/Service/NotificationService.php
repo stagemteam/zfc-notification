@@ -15,6 +15,8 @@
 
 namespace Stagem\ZfcNotification\Service;
 
+use Doctrine\ORM\EntityManager;
+use Popov\ZfcEntity\Helper\ModuleHelper;
 use Stagem\ZfcNotification\Model\Notification;
 use Stagem\ZfcPool\Model\PoolInterface;
 use Stagem\ZfcPool\Service\PoolService;
@@ -25,49 +27,57 @@ use Popov\Db\Db;
 
 /**
  * Class NotificationService
+ * @method HistoryRepository getRepository()
  */
 class NotificationService extends DomainServiceAbstract
 {
     protected $entity = Notification::class;
 
-    public function __construct()
+    public function __construct(ModuleHelper $moduleHelper, EntityManager $entityManager)
     {
+        $this->moduleHelper = $moduleHelper;
+        $this->entityManager = $entityManager;
 
     }
 
-    public function writeNotification(ContextInterface $contextProgress)
+    public function getNotifications() {
+        return $this->getRepository()->getNotifications();
+    }
+
+    //public function writeNotification(ContextInterface $contextProgress)
+    public function writeNotification($contextNotification)
     {
         /** @var \Agere\ZfcDataGrid\Service\Progress\DataGridContext $contextProgress */
-        $om = $this->getObjectManager();
-        $modulePlugin = $this->getModulePlugin();
-        $entityPlugin = $modulePlugin->getEntityPlugin();
+        //$om = $this->getObjectManager();
+        $modulePlugin = $this->moduleHelper;
+        $entityPlugin = $modulePlugin->getEntityHelper();
 
-        $context = $modulePlugin->setRealContext($contextProgress)->getRealModule();
-        $entity = $entityPlugin->setContext($item = $contextProgress->getItem())->getEntity();
-        $user = $this->getUser();
+        //$context = $modulePlugin->setRealContext($contextNotification)->getRealModule();
+        $context = $modulePlugin->setContext($contextNotification)->getModule();
+        $entity = $entityPlugin->setContext($item = $contextNotification->getItem())->getEntity();
+        //$user = $this->getUser();
 
-        /** @var Progress $progress */
-        $progress = $this->getObjectModel();
+        /*$notification = $this->getObjectModel();
         if (!$item->getId()) {
             if (!$om->contains($item)) {
                 $om->persist($item);
             }
             $om->flush();
-        }
+        }*/
+        $notification = $this->getObjectModel();
 
-        $progress->setMessage($contextProgress->getMessage())
-            ->setItemId($item->getId())
-            ->setUser($user)
-            ->setContext($context)
+        $notification->setTitle($contextNotification->getTitle())
+            ->setDescription($contextNotification->getDescription())
+            ->setUrl($contextNotification->getUrl())
+            ->setType($contextNotification->getType())
+            ->setCreatedAt(new \DateTime())
             ->setEntity($entity)
-            ->setCreatedAt(new \DateTime('now'))
-            ->setSnippet(serialize($item))
-            ->setExtra($contextProgress->getExtra())
         ;
 
-        $om->persist($progress);
-        //$om->flush();
+        $this->entityManager->persist($notification);
+        $this->entityManager->flush();
 
         return $this;
     }
+
 }

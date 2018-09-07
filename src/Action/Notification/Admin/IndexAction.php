@@ -19,6 +19,8 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Interop\Http\Server\RequestHandlerInterface;
 #use Psr\Http\Server\RequestHandlerInterface;
+use Stagem\ZfcNotification\Block\Grid\NotificationGrid;
+use Stagem\ZfcNotification\Service\NotificationService;
 use Zend\View\Model\ViewModel;
 use Stagem\ZfcAction\Page\AbstractAction;
 use Popov\ZfcUser\Controller\Plugin\UserPlugin;
@@ -30,6 +32,19 @@ use Stagem\ZfcPool\Controller\Plugin\PoolPlugin;
  */
 class IndexAction extends AbstractAction
 {
+
+    /** @var NotificationService  */
+    protected $notificationService;
+
+    /** @var NotificationGrid */
+    protected $notificationGrid;
+
+    public function __construct(NotificationService $notificationService, NotificationGrid $notificationGrid)
+    {
+        $this->notificationService = $notificationService;
+        $this->notificationGrid = $notificationGrid;
+    }
+
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         return $handler->handle($request->withAttribute(ViewModel::class, $this->action($request)));
@@ -37,14 +52,17 @@ class IndexAction extends AbstractAction
 
     public function action(ServerRequestInterface $request)
     {
+        $data = $this->notificationService->getNotifications();
 
-        $params = ['newStatus' => 'test', 'oldStatus' => 'oldStatus', 'context' => $this];
+        $grid = $this->notificationGrid->init();
 
-        $this->getEventManager()->trigger('change', null, $params);
+        //$asinDataGrid = $this->asinGrid->getDataGrid();
+        $grid->setDataSource($data);
+        $grid->render();
 
-        $viewModel = (new ViewModel());
+        $dataGridVm = $grid->getResponse();
 
+        return $dataGridVm;
 
-        return $viewModel;
     }
 }

@@ -21,6 +21,7 @@ use Popov\ZfcCore\Model\DomainAwareTrait;
 use Stagem\Amazon\Model\Marketplace;
 use Stagem\Customer\Model\Customer;
 use Stagem\Product\Model\Product;
+use Popov\ZfcEntity\Model\Entity;
 
 /**
  * @ORM\Entity(repositoryClass="Stagem\ZfcNotification\Model\Repository\NotificationRepository")
@@ -46,13 +47,13 @@ class Notification
      * Review Code
      *
      * @var string
-     * @ORM\Column(type="string", length=14, unique=false, nullable=false)
+     * @ORM\Column(type="string", length=255, unique=false, nullable=false)
      */
     private $title;
 
     /**
      * @var string
-     * @ORM\Column(type="text", length=10, unique=false, nullable=false)
+     * @ORM\Column(type="text", unique=false, nullable=false)
      */
     private $description;
 
