@@ -7,7 +7,9 @@ use Zend\ServiceManager\Factory\InvokableFactory;
 return [
 
     'event_manager' => require 'listener.config.php',
-    
+
+    'navigation' => require 'navigation.config.php',
+
     'actions' => [
         'notification' => __NAMESPACE__ . '\Action\Notification',
     ],
