@@ -67,6 +67,8 @@ class NotificationGrid extends AbstractGrid
             'translation_enabled' => true,
             'width' => 1,
             'type' => ['name' => 'DateTime'],
+			'sortDefault' => [1, 'DESC']
+
         ]);
 
         return $grid;
