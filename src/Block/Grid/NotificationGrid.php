@@ -19,6 +19,7 @@ use Doctrine\ORM\Query\Expr;
 use Stagem\ZfcNotification\Model\Notification;
 use ZfcDatagrid\Filter;
 use Popov\ZfcDataGrid\Block\AbstractGrid;
+use Popov\ZfcEntity\Model\Entity;
 
 class NotificationGrid extends AbstractGrid
 {
@@ -27,6 +28,7 @@ class NotificationGrid extends AbstractGrid
     protected $backButtonTitle = '';
 
     protected $id = Notification::MNEMO;
+    protected $entity = Entity::MNEMO;
 
     public function init()
     {
@@ -68,7 +70,15 @@ class NotificationGrid extends AbstractGrid
             'width' => 1,
             'type' => ['name' => 'DateTime'],
 			'sortDefault' => [1, 'DESC']
+        ]);
 
+        $this->add([
+            'name' => 'Select',
+            'construct' => ['mnemo', $this->entity],
+            'label' => 'Mnemo',
+            'translation_enabled' => true,
+            'width' => 1,
+            'sortDefault' => [1, 'DESC']
         ]);
 
         return $grid;

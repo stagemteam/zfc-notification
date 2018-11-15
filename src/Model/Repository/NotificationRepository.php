@@ -19,14 +19,19 @@ use Popov\ZfcCore\Model\Repository\EntityRepository;
 use Stagem\Amazon\Model\Marketplace;
 use Stagem\Product\Model\Product;
 use Stagem\ZfcNotification\Model\Notification;
+use Popov\ZfcEntity\Model\Entity;
 
 class NotificationRepository extends EntityRepository
 {
     protected $_alias = Notification::MNEMO;
+    protected $_entity = Entity::MNEMO;
+
 
     public function getNotifications()
     {
-        $qb = $this->createQueryBuilder($this->_alias);
+        $qb = $this->createQueryBuilder($this->_alias)
+        ->leftJoin($this->_alias . '.entity', $this->_entity);
+
         return $qb;
     }
 }
