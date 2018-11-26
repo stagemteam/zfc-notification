@@ -78,8 +78,15 @@ class NotificationGrid extends AbstractGrid
             'label' => 'Mnemo',
             'translation_enabled' => true,
             'width' => 1,
-            'sortDefault' => [1, 'DESC']
+            'sortDefault' => [1, 'DESC'],
+            'filter_select_options' => [[
+                'review' => 'Review',
+                'reviewSummary' => 'Review Summary',
+                'priceRule' => 'Price Rule',
+            ]],
         ]);
+
+
 
         return $grid;
     }
