@@ -79,7 +79,6 @@ class NotificationGrid extends AbstractGrid
             'translation_enabled' => true,
             'width' => 1,
             'filter_default_operation' => Filter::EQUAL,
-            'sortDefault' => [1, 'DESC'],
             'filter_select_options' => [[
                 'review' => 'Review',
                 'reviewSummary' => 'Review Summary',
